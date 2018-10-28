@@ -43,7 +43,9 @@ This version of CCR clustering code is far faster than the old one (not public).
 ```python
     #out = Output_to_File(dic, UserID, time2, OutFile)
     out += Output_to_HTML(dic, UserID, time2)
+```
     into:
+```python
     out = Output_to_File(dic, UserID, time2, OutFile)
     out += Output_to_HTML(dic, UserID, time2)
 ```

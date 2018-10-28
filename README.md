@@ -49,7 +49,7 @@ This version of CCR clustering code is far faster than the old one (not public).
     out = Output_to_File(dic, UserID, time2, OutFile)
     out += Output_to_HTML(dic, UserID, time2)
 ```
-    to tell ccr_cluster_1.1.py to write the result to OutFile.
-    In this case, your URL would look like:
-   http://localhost:5000/cluster?InpFile=data/ccr2.csv&OutFile=ccr2_2.txt&NumTopic=2
-   and you'll get the result either in the OutFile or from the http response.
+     to tell ccr_cluster_1.1.py to write the result to OutFile.
+     In this case, your URL would look like:
+ http://localhost:5000/cluster?InpFile=data/ccr2.csv&OutFile=ccr2_2.txt&NumTopic=2
+     and you'll get the result either in the OutFile or from the http response.

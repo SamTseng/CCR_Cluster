@@ -8,17 +8,17 @@ This version of CCR clustering code is far faster than the old one (not public).
 1. Get this repository to a local folder by 'git clone' or by download.
 2. This module contains the following files:
 ```
-    ccr_cluster_1.1.py : the clustering algorithm from 
-                    https://radimrehurek.com/gensim/tutorial.html
-    Next_CCR.py : to read next line from the input file
-    Stopwords.py : to remove stopwords in the responses (language dependent)
-    ReadMe.md : this file
-    data/ccr1.csv : Chinese responses to be clustered
-    data/ccr2.csv : simple English responses to show the clustering result
+    ccr_cluster_1.1.py : the clustering algorithm based on LSI from 
+                    https://radimrehurek.com/gensim/tutorial.html.
+    Next_CCR.py : to read next line from the input file.
+    Stopwords.py : to remove stopwords in the responses (language dependent).
+    ReadMe.md : this file.
+    data/ccr1.csv : Chinese responses to be clustered.
+    data/ccr2.csv : simple English responses to show the clustering result.
     data/ccr3.csv : example sentences from 
                     Deerwester et al. (1990): Indexing by Latent Semantic Analysis
                     http://www.cs.bham.ac.uk/~pxt/IDA/lsa_ind.pdf
-                    to show the clustering result
+                    to show the clustering result.
 ```
 3. Under the command line in that folder, install some packages by running:
 ```
@@ -51,7 +51,7 @@ to see if it is running.
    view-source:http://localhost:5000/cluster?InpFile=data/ccr2.csv&NumTopic=2
 
 3. You may change the values of InpFile and NumTopic for your need.
-4. You may fetch this URL in your own program.
+4. You may fetch the above URL in your own (say, PHP) program to get the clustered result.
 5. You may change the code segment in ccr_cluster_1.1.py:
 ```python
     #out = Output_to_File(dic, UserID, time2, OutFile)

@@ -4,7 +4,7 @@
 # So far, this file works best for English and Chinese.
 
 import sys, re
-#from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk.stem import PorterStemmer, WordNetLemmatizer
 
 # The English punctuations are from: https://keras.io/preprocessing/text/
 English_PUNCTUATIONS = '''
@@ -108,19 +108,19 @@ def clean_text(text):
     return text
 
 
-#ps = PorterStemmer()
-#wnl = WordNetLemmatizer()
+ps = PorterStemmer()
+wnl = WordNetLemmatizer()
 
 def clean_words(words):
 #    print("After jieba.lcut():", words)
-    WL = [ w 
-#    WL = [ ps.stem(w)
+#    WL = [ w 
+    WL = [ ps.stem(w)
 #    WL = [ wnl.lemmatize(w)
         for w in words 
           if (not re.match('\s', w)) # remove white spaces
             and (not re.match('^[a-z_]$', w)) # remove punctuations
 #            and (w not in PUNCTUATIONS) 
-#            and (w not in STOP_WORDS)
+            and (w not in STOP_WORDS)
             and (not re.match('^\d+$', w)) # remove digit
          ]
     return WL

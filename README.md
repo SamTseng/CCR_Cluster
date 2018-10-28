@@ -23,6 +23,7 @@ This version of CCR clustering code is far faster than the old one (not public).
 3. Under the command line in that folder, install some packages by running:
 ```
    $ pip install jieba
+   $ pip install nltk
    $ pip install gensim
    $ pip install flask
 ```
@@ -66,3 +67,42 @@ to tell ccr_cluster_1.1.py to write the result to OutFile.
 In this case, your URL would look like:
 http://localhost:5000/cluster?InpFile=data/ccr2.csv&OutFile=ccr2_2.txt&NumTopic=2
 and you'll get the result either in the OutFile or from the http response.
+
+## Examples:
+After running: 
+```
+$ python ccr_cluster_1.1.py
+```
+you can view the result in chrome browser with the URLs:
+
+1. view-source:http://localhost:5000/cluster?InpFile=data/ccr2.csv&NumTopic=2 
+The result would be:
+```
+GroupID	UserID	Email	Content
+1[Θ]0[Θ]john@gmail.com[Θ]Good morning
+1[Θ]1[Θ]kent@gmail.com[Θ]Good afternoon
+1[Θ]2[Θ]Mary@gmail.com[Θ]Morning has broken
+
+0[Θ]3[Θ]sosa@gmail.com[Θ]Thank you
+0[Θ]4[Θ]mike@gmail.com[Θ]Thank you very much
+0[Θ]6[Θ]bill@gmail.com[Θ]Many thanks
+
+-1[Θ]5[Θ]andy@gmail.com[Θ]Much appreciated
+```
+
+2. view-source:http://localhost:5000/cluster?InpFile=data/ccr3.csv&NumTopic=2
+
+The result would be:
+```
+GroupID	UserID	Email	Content
+1[Θ]0[Θ]john@gmail.com[Θ]Human machine interface for lab abc computer applications
+1[Θ]1[Θ]kent@gmail.com[Θ]A survey of user opinion of computer system response time
+1[Θ]2[Θ]Mary@gmail.com[Θ]The EPS user interface management system
+1[Θ]3[Θ]boby@gmail.com[Θ]System and human system engineering testing of EPS
+1[Θ]4[Θ]mike@gmail.com[Θ]Relation of user perceived response time to error measurement
+
+0[Θ]5[Θ]andy@gmail.com[Θ]The generation of random binary unordered trees
+0[Θ]6[Θ]bill@gmail.com[Θ]The intersection graph of paths in trees
+0[Θ]7[Θ]neil@gmail.com[Θ]Graph minors IV Widths of trees and well quasi ordering
+0[Θ]8[Θ]greg@gmail.com[Θ]Graph minors A survey
+```

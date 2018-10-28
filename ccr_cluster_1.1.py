@@ -6,6 +6,7 @@
 #   http://localhost:5000/cluster?InpFile=data/ccr1.csv&OutFile=ccr1.1_05.txt&NumTopic=5
 import sys, time
 time1 = time.time()
+from collections import defaultdict
 import Next_CCR
 from gensim import corpora, models, similarities
 import logging
@@ -64,6 +65,17 @@ def Output_to_HTML(dic, UserID, time2):
 #    return jsonify ({'message':'OK'})
     return out
 
+def RemoveLowHighFrequencyTerms(texts):
+    frequency = defaultdict(int)
+    for text in texts:
+        for term in text:
+            frequency[term] += 1
+    DF_max = int(0.7 * len(texts))
+    texts = [[token for token in text 
+                if frequency[token] > 1 and frequency[token] < DF_max]
+             for text in texts]
+    return texts
+
 # Initialize the 3 variables:
 (NumTopic, InpFile, OutFile) = (5, 'data/ccr1.csv', 'ccr1.1-05.txt')
 
@@ -93,6 +105,7 @@ def ccr_cluster(NumTopic, InpFile, OutFile):
     	text = clean_words(words) # 2018/09/19
     	texts.append(text)
     sys.stderr.write("There are %d documents" % i)
+    texts = RemoveLowHighFrequencyTerms(texts)
 #    from pprint import pprint   # pretty-printer
 #    pprint(texts) # [u'\u8ddf', u'\u6211', u'\u540c\u5b78', u'\u597d\u50cf'],
     dictionary = corpora.Dictionary(texts)
@@ -114,7 +127,6 @@ def ccr_cluster(NumTopic, InpFile, OutFile):
 
     # create a double wrapper over the original corpus: bow->tfidf->fold-in-lsi
     corpus_lsi = lsi[corpus_tfidf] 
-    from collections import defaultdict
     dic = defaultdict(list) # value is a list
     i=-1
     for doc in corpus_lsi: # both bow->tfidf and tfidf->lsi transformations are actually executed here, on the fly

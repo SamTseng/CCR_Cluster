@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# This file is copied from ccr_cluster_1.1.py on 2018/09/19
-#   and is modified by Yuen-Hsien Tseng
-# To run this file, you need to install jieba, gensim, and flask by the commands:
-# $ pip install flask; pip install gensim; pip install jieba
-# To test this file when run under flask, that is:
+# To test this file, run:
 # $ python ccr_cluster_1.1.py
 # And then in a browser, enter the URL:
 #   http://localhost:5000/cluster?InpFile=data/ccr1.csv&OutFile=ccr1.1_05.txt&NumTopic=5
@@ -20,6 +16,8 @@ import jieba
 # jieba.load_userdict("userdict.txt") # will use self-built dict.
 # jieba.set_dictionary('TermFreq-utf8.txt') # did not work on 2015/10/21
 # jieba.add_word('壞人');jieba.add_word('細菌'); # did not work
+
+# The next 3 lines are required for jieba to initialize. It takes 3 to 4 seconds.
 text = "This is a test.測試。"
 words = jieba.lcut(clean_text(text)) # https://github.com/fxsjy/jieba
 words = clean_words(words)
@@ -47,6 +45,7 @@ def Output_to_File(dic, UserID, time2, OutFile):
 # Next line is for Yan to use
             f.write("%d[Θ]%d[Θ]%s[Θ]%s\n" % (groupID, ID, email, content))
         f.write("\t\t\t\n")
+    f.close()
 #    return jsonify ({'message':'OK'})
     return("It takes %1.2f seconds."%(time.time()-time2))
 
@@ -65,7 +64,7 @@ def Output_to_HTML(dic, UserID, time2):
 #    return jsonify ({'message':'OK'})
     return out
 
-
+# Initialize the 3 variables:
 (NumTopic, InpFile, OutFile) = (5, 'data/ccr1.csv', 'ccr1.1-05.txt')
 
 # See: https://medium.com/@twilightlau94/rest-apis-with-flask-%E7%B3%BB%E5%88%97%E6%95%99%E5%AD%B8%E6%96%87-1-5405216d3166
@@ -91,22 +90,22 @@ def ccr_cluster(NumTopic, InpFile, OutFile):
     	UserID.append((email, content)) # append a tuple for later use
     	#print "%d : %s : %s\n" % (i, email, content)
     	words = jieba.lcut(clean_text(content)) # see https://github.com/fxsjy/jieba
-    	text = words = clean_words(words) # 2018/09/19
+    	text = clean_words(words) # 2018/09/19
     	texts.append(text)
     sys.stderr.write("There are %d documents" % i)
 #    from pprint import pprint   # pretty-printer
 #    pprint(texts) # [u'\u8ddf', u'\u6211', u'\u540c\u5b78', u'\u597d\u50cf'],
     dictionary = corpora.Dictionary(texts)
-#    dictionary.save('./deerwester.dict') # store the dictionary, for future reference
+#    dictionary.save('./ccr.dict') # store the dictionary, for future reference
 #    print(dictionary) # => Dictionary(12 unique tokens)
 #   print(dictionary.token2id) #; exit()
 
     corpus = [dictionary.doc2bow(text) for text in texts]
-    #corpora.MmCorpus.serialize('./deerwester.mm', corpus) # store to disk, for later use
+    #corpora.MmCorpus.serialize('./ccr.mm', corpus) # store to disk, for later use
 #   print(corpus) #; exit()
 
-    tfidf = models.TfidfModel(corpus) # step 1 -- initialize a model
-    corpus_tfidf = tfidf[corpus] # step 2 -- use the model to transform vectors
+    tfidf = models.TfidfModel(corpus) # initialize a model
+    corpus_tfidf = tfidf[corpus] # use the model to transform vectors
 #   #for doc in corpus_tfidf:    print(doc)
 
     # initialize an LSI transformation

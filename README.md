@@ -76,34 +76,35 @@ $ python ccr_cluster_1.1.py
 you can view the result in chrome browser with the URLs:
 
 1. view-source:http://localhost:5000/cluster?InpFile=data/ccr2.csv&NumTopic=2 
-The result would be:
+
+The result would look like:
 ```
-GroupID	UserID	Email	Content
-1[Θ]0[Θ]john@gmail.com[Θ]Good morning
-1[Θ]1[Θ]kent@gmail.com[Θ]Good afternoon
-1[Θ]2[Θ]Mary@gmail.com[Θ]Morning has broken
+GroupID	UserID	Email	 Content
+1       0 john@gmail.com Good morning
+1       1 kent@gmail.com Good afternoon
+1       2 Mary@gmail.com Morning has broken
 
-0[Θ]3[Θ]sosa@gmail.com[Θ]Thank you
-0[Θ]4[Θ]mike@gmail.com[Θ]Thank you very much
-0[Θ]6[Θ]bill@gmail.com[Θ]Many thanks
+0       3 sosa@gmail.com Thank you
+0       4 mike@gmail.com Thank you very much
+0       6 bill@gmail.com Many thanks
 
--1[Θ]5[Θ]andy@gmail.com[Θ]Much appreciated
+-1      5 andy@gmail.com Much appreciated
 ```
 
 2. view-source:http://localhost:5000/cluster?InpFile=data/ccr3.csv&NumTopic=2
 
-The result would be:
+The result would look like:
 ```
 GroupID	UserID	Email	Content
-1[Θ]0[Θ]john@gmail.com[Θ]Human machine interface for lab abc computer applications
-1[Θ]1[Θ]kent@gmail.com[Θ]A survey of user opinion of computer system response time
-1[Θ]2[Θ]Mary@gmail.com[Θ]The EPS user interface management system
-1[Θ]3[Θ]boby@gmail.com[Θ]System and human system engineering testing of EPS
-1[Θ]4[Θ]mike@gmail.com[Θ]Relation of user perceived response time to error measurement
+1       0 john@gmail.com Human machine interface for lab abc computer applications
+1       1 kent@gmail.com A survey of user opinion of computer system response time
+1       2 Mary@gmail.com The EPS user interface management system
+1       3 boby@gmail.com System and human system engineering testing of EPS
+1       4 mike@gmail.com Relation of user perceived response time to error measurement
 
-0[Θ]5[Θ]andy@gmail.com[Θ]The generation of random binary unordered trees
-0[Θ]6[Θ]bill@gmail.com[Θ]The intersection graph of paths in trees
-0[Θ]7[Θ]neil@gmail.com[Θ]Graph minors IV Widths of trees and well quasi ordering
-0[Θ]8[Θ]greg@gmail.com[Θ]Graph minors A survey
+0       5 andy@gmail.com The generation of random binary unordered trees
+0       6 bill@gmail.com The intersection graph of paths in trees
+0       7 neil@gmail.com Graph minors IV Widths of trees and well quasi ordering
+0       8 greg@gmail.com Graph minors A survey
 ```
 The above result is the same as that at: https://radimrehurek.com/gensim/tut2.html

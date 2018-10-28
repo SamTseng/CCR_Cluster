@@ -90,6 +90,8 @@ GroupID	UserID	Email	 Content
 
 -1      5 andy@gmail.com Much appreciated
 ```
+The value -1 in GourpID means that the corresponding texts are outliers.
+In the case, the 'Much' term is removed because it is in the stopword list.
 
 2. view-source:http://localhost:5000/cluster?InpFile=data/ccr3.csv&NumTopic=2
 

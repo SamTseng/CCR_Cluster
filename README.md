@@ -49,4 +49,3 @@ This version of CCR clustering code is far faster than the old one (not public).
     In this case, your URL would look like:
    http://localhost:5000/cluster?InpFile=data/ccr2.csv&OutFile=ccr2_2.txt&NumTopic=2
    and you'll get the result either in the OutFile or from the http response.
-

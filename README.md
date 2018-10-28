@@ -44,7 +44,7 @@ to see if it is running.
 
    So, in a browser, enter the URL (or in your PHP code, issue an URL):
    http://localhost:5000/cluster?InpFile=data/ccr2.csv&NumTopic=2
-   you will get the clustered result from the HTTP response string.
+   and you will get the clustered result from the HTTP response string.
 
    To view the clustered result, it's better to examine the source:
    view-source:http://localhost:5000/cluster?InpFile=data/ccr2.csv&NumTopic=2

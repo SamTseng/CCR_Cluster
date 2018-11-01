@@ -107,12 +107,9 @@ def LSI(corpus, dictionary, NumTopic):
 
 # LDA leads to unstable clusters. So do not use LDA
 def LDA(corpus, dictionary, NumTopic):
-	tfidf = models.TfidfModel(corpus) # step 1 -- initialize a model
-	corpus_tfidf = tfidf[corpus] # step 2 -- use the model to transform vectors
-	lda = models.ldamodel.LdaModel(corpus_tfidf, id2word=dictionary, num_topics=NumTopic, passes=5)
-	corpus_lda = lda[corpus_tfidf] # infer topic distributions on the same corpus
 #	lda = models.ldamodel.LdaModel(corpus, id2word=dictionary, num_topics=NumTopic, passes=5)
-#	corpus_lda = lda[corpus] # infer topic distributions on the same corpus
+	lda = models.LdaModel(corpus, id2word=dictionary, num_topics=NumTopic, passes=5)
+	corpus_lda = lda[corpus] # infer topic distributions on the same corpus
 #	lda.show_topics(num_topics=NumTopic) #, num_words=10, log=False, formatted=True)
 # The following segment does print out topic distribution 
 #	i=0 # for the given document bow, as a list of 
@@ -153,18 +150,18 @@ def ccr_cluster(NumTopic, InpFile, OutFile):
 
 # After we have dictionary and corpus, now build the model
     corpus_model = LSI(corpus, dictionary, NumTopic)
-#    corpus_model = LDA(corpus, dictionary, NumTopic)
+#    corpus_model = LDA(corpus, dictionary, NumTopic) # do not use this
 
 
     dic = defaultdict(list) # value is a list
-    i=-1
-    for doc in corpus_model: # both bow->tfidf and tfidf->lsi transformations are actually executed here, on the fly
-        i += 1 # DocID
+    for i, doc in enumerate(corpus_model): 
+    # both bow->tfidf and tfidf->lsi transformations are actually executed here, on the fly
         maxi = Maxi(doc)
         dic[maxi].append(i) # append DocID to group maxi
 #        print(maxi, doc)
 #   dic.items()
 #   exit()
+
     out = '' # a string to be returned to the calling URL
 #    out = Output_to_File(dic, UserID, time2, OutFile)
     out += Output_to_HTML(dic, UserID, time2)

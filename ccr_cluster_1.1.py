@@ -34,6 +34,7 @@ def Maxi(doc):
 		if maxi < abs(coef):
 			maxi = abs(coef)
 			i = j
+#	if maxi < 0.15: i = -1
 	return i
 
 def Output_to_File(dic, UserID, time2, OutFile):
@@ -91,6 +92,35 @@ def cluster_by_post():
     OutFile = request.args.get('OutFile')
     return ccr_cluster(NumTopic, InpFile, OutFile)
 
+def LSI(corpus, dictionary, NumTopic):
+	tfidf = models.TfidfModel(corpus) # step 1 -- initialize a model
+	corpus_tfidf = tfidf[corpus] # step 2 -- use the model to transform vectors
+#	for doc in corpus_tfidf:    print(doc)
+	# initialize an LSI transformation
+	lsi = models.LsiModel(corpus_tfidf, id2word=dictionary, num_topics=NumTopic) 
+##	lsi.print_topics(NumTopic) # the above line will print the same thing using logging
+	# create a double wrapper over the original corpus: bow->tfidf->fold-in-lsi
+	corpus_lsi = lsi[corpus_tfidf] 
+#	for doc in corpus_lsi: print doc # both bow->tfidf and tfidf->lsi transformations are actually executed here, on the fly
+#	lsi.print_topics(NumTopic) # same as using logging
+	return corpus_lsi
+
+# LDA leads to unstable clusters. So do not use LDA
+def LDA(corpus, dictionary, NumTopic):
+	tfidf = models.TfidfModel(corpus) # step 1 -- initialize a model
+	corpus_tfidf = tfidf[corpus] # step 2 -- use the model to transform vectors
+	lda = models.ldamodel.LdaModel(corpus_tfidf, id2word=dictionary, num_topics=NumTopic, passes=5)
+	corpus_lda = lda[corpus_tfidf] # infer topic distributions on the same corpus
+#	lda = models.ldamodel.LdaModel(corpus, id2word=dictionary, num_topics=NumTopic, passes=5)
+#	corpus_lda = lda[corpus] # infer topic distributions on the same corpus
+#	lda.show_topics(num_topics=NumTopic) #, num_words=10, log=False, formatted=True)
+# The following segment does print out topic distribution 
+#	i=0 # for the given document bow, as a list of 
+#	for bow in corpus: # (topic_id, topic_probability) 2-tuples
+#		print i, lda.get_document_topics(bow)
+#		i+=1
+	return corpus_lda
+
 def ccr_cluster(NumTopic, InpFile, OutFile):
     time2 = time.time()
     NumTopic = int(NumTopic)
@@ -101,7 +131,10 @@ def ccr_cluster(NumTopic, InpFile, OutFile):
     	i += 1
     	UserID.append((email, content)) # append a tuple for later use
     	#print "%d : %s : %s\n" % (i, email, content)
-    	words = jieba.lcut(clean_text(content)) # see https://github.com/fxsjy/jieba
+        # see https://github.com/fxsjy/jieba
+    	words = jieba.lcut(clean_text(content), cut_all=False) 
+    	#words = jieba.lcut(clean_text(content), cut_all=True) 
+    	#words = jieba.lcut_for_search(clean_text(content)) 
     	text = clean_words(words) # 2018/09/19
     	texts.append(text)
     sys.stderr.write("There are %d documents" % i)
@@ -117,19 +150,15 @@ def ccr_cluster(NumTopic, InpFile, OutFile):
     #corpora.MmCorpus.serialize('./ccr.mm', corpus) # store to disk, for later use
 #   print(corpus) #; exit()
 
-    tfidf = models.TfidfModel(corpus) # initialize a model
-    corpus_tfidf = tfidf[corpus] # use the model to transform vectors
-#   #for doc in corpus_tfidf:    print(doc)
 
-    # initialize an LSI transformation
-    lsi = models.LsiModel(corpus_tfidf, id2word=dictionary, num_topics=NumTopic) 
-#   lsi.print_topics(NumTopic) # the above line will print the same thing using logging
+# After we have dictionary and corpus, now build the model
+    corpus_model = LSI(corpus, dictionary, NumTopic)
+#    corpus_model = LDA(corpus, dictionary, NumTopic)
 
-    # create a double wrapper over the original corpus: bow->tfidf->fold-in-lsi
-    corpus_lsi = lsi[corpus_tfidf] 
+
     dic = defaultdict(list) # value is a list
     i=-1
-    for doc in corpus_lsi: # both bow->tfidf and tfidf->lsi transformations are actually executed here, on the fly
+    for doc in corpus_model: # both bow->tfidf and tfidf->lsi transformations are actually executed here, on the fly
         i += 1 # DocID
         maxi = Maxi(doc)
         dic[maxi].append(i) # append DocID to group maxi

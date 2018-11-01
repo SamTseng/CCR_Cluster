@@ -71,9 +71,13 @@ Chinese_STOP_WORDS = '''
 的 是 了 和 與 及 或 於 也 並 之 以 在 另 又 該 由 但 仍 就
 都 讓 要 把 上 來 說 從 等 
 我 你 他 妳 她 它 您 我們 你們 妳們 他們 她們 
+有 此 因 且 為 嗎 那 哪 吧 很 這
 並有 並可 可以 可供 提供 以及 包括 另有 另外 此外 除了 目前 現在 仍就 就是 
+⒈ ⒉ ⒊ 可能 應該 則是 它會 這麼 什麼 因為 那些 圖上
 '''.split()
 # StopWords.extend(['　', '■']) # these chars belong to r'\W'
+#Chinese_STOP_WORDS= []
+
 
 # Combine multi-lingual stop words
 STOP_WORDS = Chinese_STOP_WORDS
@@ -102,7 +106,7 @@ def clean_text(text):
     # Next line will remove punctuations. \w matches Chinese characters
     #text = re.sub('\W', ' ', text) # 'Years passed  多少 年过 去 了  '
     # Next line will remove redundant white space for jeiba to cut
-    text = re.sub('\s+([^a-zA-Z0-9.])', r'\1', text) # years passed.多少年过去了。
+    text = re.sub(r'\s+([^a-zA-Z0-9.])', r'\1', text) # years passed.多少年过去了。
 # see: https://stackoverflow.com/questions/16720541/python-string-replace-regular-expression
     text = text.strip(' ')
     return text
@@ -117,11 +121,12 @@ def clean_words(words):
     WL = [ ps.stem(w)
 #    WL = [ wnl.lemmatize(w)
         for w in words 
-          if (not re.match('\s', w)) # remove white spaces
-            and (not re.match('^[a-z_]$', w)) # remove punctuations
+          if (not re.match(r'\s', w)) # remove white spaces
+            and (not re.match(r'\W', w)) # remove punctuations
+#            and (not re.match('^[a-z_]$', w)) # remove punctuations
 #            and (w not in PUNCTUATIONS) 
             and (w not in STOP_WORDS)
-            and (not re.match('^\d+$', w)) # remove digit
+            and (not re.match(r'^\d+$', w)) # remove digit
          ]
     return WL
 

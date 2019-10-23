@@ -115,17 +115,17 @@ def clean_text(text):
 ps = PorterStemmer()
 wnl = WordNetLemmatizer()
 
-def clean_words(words):
+def clean_words(words, RmvStopWord=True, RmvMark=True):
 #    print("After jieba.lcut():", words)
 #    WL = [ w 
     WL = [ ps.stem(w)
 #    WL = [ wnl.lemmatize(w)
         for w in words 
           if (not re.match(r'\s', w)) # remove white spaces
-            and (not re.match(r'\W', w)) # remove punctuations
-#            and (not re.match('^[a-z_]$', w)) # remove punctuations
-#            and (w not in PUNCTUATIONS) 
-            and (w not in STOP_WORDS)
+            and (RmvMark==False or not re.match(r'\W', w)) # remove punctuations
+#            and (RmvMark==False or not re.match('^[a-z_]$', w)) # remove punctuations
+#            and (RmvMark==False or w not in PUNCTUATIONS)
+            and (RmvStopWord==False or w not in STOP_WORDS)
             and (not re.match(r'^\d+$', w)) # remove digit
          ]
     return WL

@@ -137,15 +137,15 @@ def ccr_cluster(NumTopic, InpFile, OutFile):
     i = 0
     texts = []; UserID = []
     for email, content in nxtd:
-    	i += 1
-    	UserID.append((email, content)) # append a tuple for later use
+        i += 1
+        UserID.append((email, content)) # append a tuple for later use
     	#print "%d : %s : %s\n" % (i, email, content)
         # see https://github.com/fxsjy/jieba
-    	words = jieba.lcut(clean_text(content), cut_all=False) 
+        words = jieba.lcut(clean_text(content), cut_all=False) 
     	#words = jieba.lcut(clean_text(content), cut_all=True) 
     	#words = jieba.lcut_for_search(clean_text(content)) 
-    	text = clean_words(words) # 2018/09/19
-    	texts.append(text)
+        text = clean_words(words) # 2018/09/19
+        texts.append(text)
     sys.stderr.write("There are %d documents" % i)
     texts = RemoveLowHighFrequencyTerms(texts)
 #    from pprint import pprint   # pretty-printer

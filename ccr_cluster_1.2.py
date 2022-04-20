@@ -200,4 +200,4 @@ if __name__ == "__main__":
         pass
     #ccr_cluster(NumTopic, InpFile, OutFile)
     #print("It takes %1.2f seconds."%(time.time()-time1))
-    app.run(port=5000, debug=True)
+    app.run(port=5003, debug=True)
